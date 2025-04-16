@@ -1,0 +1,30 @@
+{
+	"schemaVersion": 1,
+	"id": "anemos",
+	"version": "${version}",
+	"name": "Anemos",
+	"description": "",
+	"authors": [
+		"PrinceParshia"
+	],
+	"contact": {
+	},
+	"license": "All Rights Reserved",
+	"icon": "anemos.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"princ.anemos.Anemos"
+		]
+	},
+	"mixins": [
+		"anemos.mixins.json"
+	],
+	"accessWidener": "anemos.accesswidener",
+	"depends": {
+		"fabricloader": ">=0.16.10",
+		"minecraft": "~1.21.5",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
