@@ -13,7 +13,7 @@ import static princ.anemos.Anemosystem.*;
 public class GameRendererMixin {
     @Inject(method = "getNightVisionScale", at = @At("HEAD"), cancellable = true)
     private static void adjustNightVisionScale(LivingEntity livingEntity, float f, CallbackInfoReturnable<Float> cir) {
-        if (config.fakeNightVision.enabled) {
+        if (config.fakeNightVision.enabled.get()) {
             cir.setReturnValue(getFnvScale);
         }
     }

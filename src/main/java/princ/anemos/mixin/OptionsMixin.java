@@ -25,14 +25,14 @@ public class OptionsMixin {
     private void init(Options options, OptionInstance<?> instance) {
         this.gamma = new OptionInstance<>("options.gamma", OptionInstance.noTooltip(), (component, double_) -> {
             int i = (int) (double_ * (double) 100.0F);
-            if (i == config.gamma.min) {
+            if (i == config.gamma.min.get()) {
                 return genericValueLabel(component, Component.translatable("options.gamma.min"));
-            } else if (i == config.gamma.default_) {
+            } else if (i == config.gamma.default_.get()) {
                 return genericValueLabel(component, Component.translatable("options.gamma.default"));
             } else {
-                return i == config.gamma.max ? genericValueLabel(component, Component.translatable("options.gamma.max")) : genericValueLabel(component, i);
+                return i == config.gamma.max.get() ? genericValueLabel(component, Component.translatable("options.gamma.max")) : genericValueLabel(component, i);
             }
-        }, OptionInstanceImpl.UnitDouble.INSTANCE, config.gamma.default_, (double_) -> {
+        }, OptionInstanceImpl.UnitDouble.INSTANCE, config.gamma.default_.get(), (double_) -> {
         });
     }
 }

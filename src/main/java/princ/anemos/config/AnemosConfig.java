@@ -1,36 +1,44 @@
 package princ.anemos.config;
 
+import me.fzzyhmstrs.fzzy_config.annotations.Translation;
 import me.fzzyhmstrs.fzzy_config.config.Config;
 import me.fzzyhmstrs.fzzy_config.config.ConfigSection;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedBoolean;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import net.minecraft.resources.ResourceLocation;
 
 import static princ.anemos.Anemos.MOD_ID;
 
 public class AnemosConfig extends Config {
     public AnemosConfig() {
-        super(ResourceLocation.fromNamespaceAndPath(MOD_ID, "general"), "", "", MOD_ID);
+        super(ResourceLocation.fromNamespaceAndPath(MOD_ID, "toml"), "", "", MOD_ID);
     }
 
     public GammaConfig gamma = new GammaConfig();
     public FakeNightVivsionConfig fakeNightVision = new FakeNightVivsionConfig();
     public RemoveBlindnessConfig removeBlindness = new RemoveBlindnessConfig();
 
+    @Translation( prefix = "config.anemos.gamma" )
     public static class GammaConfig extends ConfigSection {
-        public double min = 0.0, default_ = 1.0, max = 15.0;
-        public double sliderInterval = 0.01;
+        public ValidatedDouble min = new ValidatedDouble(0.0, 100.0, 0.0);
+        public ValidatedDouble default_ = new ValidatedDouble(100.0, 100.0, 0.0);
+        public ValidatedDouble max = new ValidatedDouble(1500.0, 1500.0, 1000.0);
+        public ValidatedDouble sliderInterval = new ValidatedDouble(1, 100, 1);
         public boolean transition = false;
         public int transitionTime = 30;
-        public double prev;
+        public double prev = default_.get();
     }
 
+    @Translation( prefix = "config.anemos.fnv" )
     public static class FakeNightVivsionConfig extends ConfigSection {
-        public boolean enabled;
+        public ValidatedBoolean enabled = new ValidatedBoolean(false);
         public boolean transition = false;
         public int transitionTime = 20;
     }
 
+    @Translation( prefix = "config.anemos.rmb" )
     public static class RemoveBlindnessConfig extends ConfigSection {
-        public boolean enabled;
+        public ValidatedBoolean enabled = new ValidatedBoolean(false);
         public boolean transition = false;
         public int transitionTime = 20;
     }

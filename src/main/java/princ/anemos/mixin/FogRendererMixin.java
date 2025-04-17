@@ -13,7 +13,7 @@ import static princ.anemos.Anemosystem.config;
 public class FogRendererMixin {
     @Redirect(method = "computeFogColor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GameRenderer;getNightVisionScale(Lnet/minecraft/world/entity/LivingEntity;F)F"))
     private static float removeFogColor(LivingEntity livingEntity, float f) {
-        if (config.fakeNightVision.enabled) {
+        if (config.fakeNightVision.enabled.get()) {
             return 0.0F;
         }
         return GameRenderer.getNightVisionScale(livingEntity, f);

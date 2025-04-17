@@ -14,6 +14,8 @@ public class Anemosystem {
     public static final AnemosConfig config = ConfigApiJava.registerAndLoadConfig(AnemosConfig::new, RegisterType.CLIENT);
     private static final RandomSource random = RandomSource.create();
 
+    public static double getMinGamma = config.gamma.min.get() / 100.0;
+    public static double getMaxGamma = config.gamma.max.get() / 100.0;
     private static int gammaTransitionTime;
     private static double targetGamma;
     private static int elapsedGammaTransitionTime;
@@ -41,26 +43,28 @@ public class Anemosystem {
         if (gammaKey.consumeClick()) {
             if (config.gamma.transition) {
                 if (!execGammaTransition) {
-                    targetGamma = (gamma().get() != config.gamma.max) ? config.gamma.max : config.gamma.prev;
-                    if (targetGamma == config.gamma.max) config.gamma.prev = gamma().get();
+                    targetGamma = (gamma().get() != getMaxGamma) ? getMaxGamma : config.gamma.prev;
+                    if (targetGamma == getMaxGamma) config.gamma.prev = gamma().get();
                     gammaTransitionTime = config.gamma.transitionTime;
                     elapsedGammaTransitionTime = 0;
                     execGammaTransition = true;
                 } else {
-                    targetGamma = (targetGamma != config.gamma.max) ? config.gamma.max : config.gamma.prev;
+                    targetGamma = (targetGamma != getMaxGamma) ? getMaxGamma : config.gamma.prev;
                     gammaTransitionTime = elapsedGammaTransitionTime;
                     elapsedGammaTransitionTime = 0;
                 }
             } else {
-                targetGamma = (gamma().get() != config.gamma.max) ? config.gamma.max : config.gamma.prev;
-                if (targetGamma == config.gamma.max) config.gamma.prev = gamma().get();
+                targetGamma = (gamma().get() != getMaxGamma) ? getMaxGamma : config.gamma.prev;
+                if (targetGamma == getMaxGamma) config.gamma.prev = gamma().get();
                 gamma().set(targetGamma);
+                config.save();
             }
         }
 
         if (config.gamma.transition && execGammaTransition) {
             if (gammaTransitionTime <= 0) {
                 execGammaTransition = false;
+                config.save();
             } else {
                 gamma().set(gamma().get() + ((targetGamma - gamma().get()) / gammaTransitionTime));
                 gammaTransitionTime--;
@@ -70,10 +74,12 @@ public class Anemosystem {
     }
 
     public static void execFnvKeyAction() {
+        getFnvScale = config.fakeNightVision.enabled.get() ? maxFnvScale : minFnvScale;
+
         if (fakeNightVisionKey.consumeClick()) {
             if (config.fakeNightVision.transition) {
                 if (!execFnvTransition) {
-                    boolean toggleFnv = !config.fakeNightVision.enabled;
+                    boolean toggleFnv = !config.fakeNightVision.enabled.get();
                     startFnvScale = getFnvScale;
                     targetFnvScale = toggleFnv ? maxFnvScale : minFnvScale;
                     fnvTransitionTime = config.fakeNightVision.transitionTime;
@@ -81,15 +87,16 @@ public class Anemosystem {
                     execFnvTransition = true;
 
                     if (toggleFnv) {
-                        config.fakeNightVision.enabled = true;
+                        config.fakeNightVision.enabled.validateAndSet(true);
                         queueFnvDisable = false;
                     } else {
                         queueFnvDisable = true;
                     }
                 }
             } else {
-                config.fakeNightVision.enabled = !config.fakeNightVision.enabled;
-                getFnvScale = config.fakeNightVision.enabled ? maxFnvScale : minFnvScale;
+                config.fakeNightVision.enabled.validateAndSet(!config.fakeNightVision.enabled.get());
+                getFnvScale = config.fakeNightVision.enabled.get() ? maxFnvScale : minFnvScale;
+                config.save();
             }
         }
 
@@ -99,9 +106,11 @@ public class Anemosystem {
                 execFnvTransition = false;
 
                 if (queueFnvDisable) {
-                    config.fakeNightVision.enabled = false;
+                    config.fakeNightVision.enabled.validateAndSet(false);
                     queueFnvDisable = false;
                 }
+
+                config.save();
             } else {
                 getFnvScale = Mth.clamp(Mth.lerp((float) elapsedFnvTransitionTime / fnvTransitionTime, startFnvScale, targetFnvScale), minFnvScale, maxFnvScale);
                 fnvTransitionTime--;
@@ -115,13 +124,14 @@ public class Anemosystem {
             if (config.removeBlindness.transition) {
                 if (!execRmbTransition) {
                     execRmbTransition = true;
-                    targetRmbState = !config.removeBlindness.enabled;
+                    targetRmbState = !config.removeBlindness.enabled.get();
                     rmbTransitionTime = 0;
                     rmbDuration = config.removeBlindness.transitionTime + random.nextInt(10);
                 }
             } else {
-                targetRmbState = !config.removeBlindness.enabled;
-                config.removeBlindness.enabled = !config.removeBlindness.enabled;
+                targetRmbState = !config.removeBlindness.enabled.get();
+                config.removeBlindness.enabled.validateAndSet(!config.removeBlindness.enabled.get());
+                config.save();
             }
         }
 
@@ -129,12 +139,13 @@ public class Anemosystem {
             rmbTransitionTime++;
 
             if (random.nextFloat() < (1.0F - ((float) rmbTransitionTime / rmbDuration))) {
-                config.removeBlindness.enabled = !config.removeBlindness.enabled;
+                config.removeBlindness.enabled.validateAndSet(!config.removeBlindness.enabled.get());
             }
 
             if (rmbTransitionTime >= rmbDuration) {
-                config.removeBlindness.enabled = targetRmbState;
+                config.removeBlindness.enabled.validateAndSet(targetRmbState);
                 execRmbTransition = false;
+                config.save();
             }
         }
     }

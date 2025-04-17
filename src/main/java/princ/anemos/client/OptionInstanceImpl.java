@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.function.DoubleFunction;
 import java.util.function.ToDoubleFunction;
 
-import static princ.anemos.Anemosystem.config;
+import static princ.anemos.Anemosystem.*;
 
 public class OptionInstanceImpl {
     @Environment(EnvType.CLIENT)
@@ -19,17 +19,17 @@ public class OptionInstanceImpl {
 
         @Override
         public Optional<Double> validateValue(Double double_) {
-            return double_ >= config.gamma.min && double_ <= config.gamma.max ? Optional.of(double_) : Optional.empty();
+            return double_ >= getMinGamma && double_ <= getMaxGamma ? Optional.of(double_) : Optional.empty();
         }
 
         @Override
         public double toSliderValue(Double double_) {
-            return double_ / config.gamma.max;
+            return (double_ - getMinGamma) / (getMaxGamma - getMinGamma);
         }
 
         @Override
         public Double fromSliderValue(double d) {
-            return d * config.gamma.max;
+            return d * (getMaxGamma - getMinGamma) + getMinGamma;
         }
 
         public <R> SliderableValueSet<R> xmap(final DoubleFunction<? extends R> doubleFunction, final ToDoubleFunction<? super R> toDoubleFunction) {
@@ -56,7 +56,7 @@ public class OptionInstanceImpl {
 
         @Override
         public Codec<Double> codec() {
-            return Codec.withAlternative(Codec.doubleRange(config.gamma.min, config.gamma.max), Codec.BOOL, (boolean_) -> boolean_ ? config.gamma.max : config.gamma.min);
+            return Codec.withAlternative(Codec.doubleRange(getMinGamma, getMaxGamma), Codec.BOOL, (boolean_) -> boolean_ ? getMaxGamma : getMinGamma);
         }
     }
 }
