@@ -9,8 +9,9 @@ import princ.anemos.client.KeyMappingRegistry;
 
 @Environment(EnvType.CLIENT)
 public class Anemos implements ClientModInitializer {
-	public static final String MOD_ID = "anemos";
-	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+	public static final String NAMESPACE = "anemos";
+	public static final String NAME = "Anemos";
+	public static final Logger LOGGER = LoggerFactory.getLogger(NAME);
 
 	@Override
 	public void onInitializeClient() {

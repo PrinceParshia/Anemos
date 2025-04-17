@@ -10,6 +10,13 @@ base {
 	archivesName = project.archives_base_name
 }
 
+loom {
+	def aw = file("src/main/resources/anemos.accesswidener")
+	if (aw.exists()) {
+		accessWidenerPath = aw
+	}
+}
+
 repositories {
 	// Add repositories to retrieve artifacts from in here.
 	// You should only use this when depending on other mods because
@@ -23,11 +30,6 @@ repositories {
 		name = "FzzyMaven"
 		url = uri("https://maven.fzzyhmstrs.me/")
 	}
-
-}
-
-loom {
-	accessWidenerPath = file("src/main/resources/anemos.accesswidener")
 }
 
 dependencies {
@@ -40,9 +42,9 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modImplementation "maven.modrinth:sodium:mc1.21.5-0.6.13-fabric"
-	modApi "com.terraformersmc:modmenu:14.0.0-rc.2"
-	modImplementation("me.fzzyhmstrs:fzzy_config:0.6.9+1.21.5")
+	modApi "com.terraformersmc:modmenu:${modmenu_version}"
+	modImplementation "maven.modrinth:sodium:${project.sodium_version}"
+	modImplementation "me.fzzyhmstrs:fzzy_config:${fzzy_config_version}"
 }
 
 processResources {

@@ -7,11 +7,11 @@ import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedBoolean;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import net.minecraft.resources.ResourceLocation;
 
-import static princ.anemos.Anemos.MOD_ID;
+import static princ.anemos.Anemos.NAMESPACE;
 
 public class AnemosConfig extends Config {
     public AnemosConfig() {
-        super(ResourceLocation.fromNamespaceAndPath(MOD_ID, "toml"), "", "", MOD_ID);
+        super(ResourceLocation.fromNamespaceAndPath(NAMESPACE, "toml"), "", "", NAMESPACE);
     }
 
     public GammaConfig gamma = new GammaConfig();

@@ -6,12 +6,12 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.KeyMapping;
 import org.lwjgl.glfw.GLFW;
 
-import static princ.anemos.Anemos.MOD_ID;
+import static princ.anemos.Anemos.NAMESPACE;
 import static princ.anemos.Anemosystem.*;
 
 public class KeyMappingRegistry {
-    private static final String CATEGORY = "key.categories." + MOD_ID;
-    private static final String GENERIC_KEY_NAMESPACE = "key." + MOD_ID;
+    private static final String CATEGORY = "key.categories." + NAMESPACE;
+    private static final String GENERIC_KEY_NAMESPACE = "key." + NAMESPACE;
 
     public static final KeyMapping gammaKey = new KeyMapping(GENERIC_KEY_NAMESPACE + ".gamma", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_B, CATEGORY);
     public static final KeyMapping fakeNightVisionKey = new KeyMapping(GENERIC_KEY_NAMESPACE + ".fnv", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_N, CATEGORY);
