@@ -13,7 +13,7 @@ public class AnemosConfig extends Config {
     private static final String GENERIC_TRANSLATION_PREFIX = "config." + NAMESPACE;
 
     public AnemosConfig() {
-        super(ResourceLocation.fromNamespaceAndPath(NAMESPACE, "toml"), "", "", NAMESPACE);
+        super(ResourceLocation.fromNamespaceAndPath(NAMESPACE, "main"), "", "", NAMESPACE);
     }
 
     public GammaConfig gamma = new GammaConfig();

@@ -126,10 +126,10 @@ public class Anemosystem {
         if (removeBlindnessKey.consumeClick()) {
             if (config.removeBlindness.transition) {
                 if (!execRmbTransition) {
-                    execRmbTransition = true;
                     targetRmbState = !config.removeBlindness.enabled.get();
                     rmbTransitionTime = 0;
                     rmbDuration = config.removeBlindness.transitionTime + random.nextInt(10);
+                    execRmbTransition = true;
                 }
             } else {
                 targetRmbState = !config.removeBlindness.enabled.get();

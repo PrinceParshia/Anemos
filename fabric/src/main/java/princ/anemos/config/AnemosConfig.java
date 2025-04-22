@@ -7,13 +7,13 @@ import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedBoolean;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
 import net.minecraft.resources.ResourceLocation;
 
-import static princ.anemos.client.Anemos.NAMESPACE;
+import static princ.anemos.AnemosConstants.NAMESPACE;
 
 public class AnemosConfig extends Config {
     private static final String GENERIC_TRANSLATION_PREFIX = "config." + NAMESPACE;
 
     public AnemosConfig() {
-        super(ResourceLocation.fromNamespaceAndPath(NAMESPACE, "toml"), "", "", NAMESPACE);
+        super(ResourceLocation.fromNamespaceAndPath(NAMESPACE, "main"), "", "", NAMESPACE);
     }
 
     public GammaConfig gamma = new GammaConfig();

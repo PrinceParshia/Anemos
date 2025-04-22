@@ -8,7 +8,7 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.KeyMapping;
 import org.lwjgl.glfw.GLFW;
 
-import static princ.anemos.client.Anemos.NAMESPACE;
+import static princ.anemos.AnemosConstants.NAMESPACE;
 import static princ.anemos.client.Anemosystem.*;
 
 @Environment(EnvType.CLIENT)
