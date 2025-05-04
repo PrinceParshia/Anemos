@@ -10,8 +10,9 @@ import java.util.Optional;
 import java.util.function.DoubleFunction;
 import java.util.function.ToDoubleFunction;
 
-import static princ.anemos.client.Anemosystem.*;
+import static princ.anemos.AnemosConstants.*;
 
+@Environment(EnvType.CLIENT)
 public class OptionInstanceImpl {
     @Environment(EnvType.CLIENT)
     public enum UnitDouble implements SliderableValueSet<Double> {
@@ -19,17 +20,17 @@ public class OptionInstanceImpl {
 
         @Override
         public Optional<Double> validateValue(Double double_) {
-            return double_ >= getMinGamma && double_ <= getMaxGamma ? Optional.of(double_) : Optional.empty();
+            return double_ >= configInternal.gamma.min && double_ <= configInternal.gamma.max ? Optional.of(double_) : Optional.empty();
         }
 
         @Override
         public double toSliderValue(Double double_) {
-            return (double_ - getMinGamma) / (getMaxGamma - getMinGamma);
+            return (double_ - configInternal.gamma.min) / (configInternal.gamma.max - configInternal.gamma.min);
         }
 
         @Override
         public Double fromSliderValue(double d) {
-            return d * (getMaxGamma - getMinGamma) + getMinGamma;
+            return d * (configInternal.gamma.max - configInternal.gamma.min) + configInternal.gamma.min;
         }
 
         public <R> SliderableValueSet<R> xmap(final DoubleFunction<? extends R> doubleFunction, final ToDoubleFunction<? super R> toDoubleFunction) {
@@ -56,7 +57,7 @@ public class OptionInstanceImpl {
 
         @Override
         public Codec<Double> codec() {
-            return Codec.withAlternative(Codec.doubleRange(getMinGamma, getMaxGamma), Codec.BOOL, (boolean_) -> boolean_ ? getMaxGamma : getMinGamma);
+            return Codec.withAlternative(Codec.doubleRange(configInternal.gamma.min, configInternal.gamma.max), Codec.BOOL, (boolean_) -> boolean_ ? configInternal.gamma.max : configInternal.gamma.min);
         }
     }
 }

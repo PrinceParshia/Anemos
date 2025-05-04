@@ -12,7 +12,9 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import princ.anemos.client.OptionInstanceImpl;
 
 import static net.minecraft.client.Options.genericValueLabel;
-import static princ.anemos.client.Anemosystem.config;
+import static princ.anemos.AnemosConstants.*;
+import static princ.anemos.util.UnitValueConverter.fromDoublePercent;
+import static princ.anemos.util.UnitValueConverter.toDoublePercent;
 
 @Mixin(Options.class)
 public class OptionsMixin {
@@ -22,17 +24,17 @@ public class OptionsMixin {
     private OptionInstance<Double> gamma;
 
     @Redirect(method = "<init>", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Options;gamma:Lnet/minecraft/client/OptionInstance;"))
-    private void init(Options options, OptionInstance<?> instance) {
+    public void init(Options options, OptionInstance<?> instance) {
         this.gamma = new OptionInstance<>("options.gamma", OptionInstance.noTooltip(), (component, double_) -> {
             int i = (int) (double_ * (double) 100.0F);
-            if (i == config.gamma.min.get()) {
+            if (i == toDoublePercent(configInternal.gamma.min)) {
                 return genericValueLabel(component, Component.translatable("options.gamma.min"));
-            } else if (i == config.gamma.default_.get()) {
+            } else if (i == config.gamma.defaultValue.get()) {
                 return genericValueLabel(component, Component.translatable("options.gamma.default"));
             } else {
-                return i == config.gamma.max.get() ? genericValueLabel(component, Component.translatable("options.gamma.max")) : genericValueLabel(component, i);
+                return i == toDoublePercent(configInternal.gamma.max) ? genericValueLabel(component, Component.translatable("options.gamma.max")) : genericValueLabel(component, i);
             }
-        }, OptionInstanceImpl.UnitDouble.INSTANCE, config.gamma.default_.get(), (double_) -> {
+        }, OptionInstanceImpl.UnitDouble.INSTANCE, fromDoublePercent(config.gamma.defaultValue.get()), (double_) -> {
         });
     }
 }

@@ -7,14 +7,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static princ.anemos.client.Anemosystem.*;
+import static princ.anemos.AnemosConstants.*;
+import static princ.anemos.util.UnitValueConverter.*;
 
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
     @Inject(method = "getNightVisionScale", at = @At("HEAD"), cancellable = true)
     private static void adjustNightVisionScale(LivingEntity livingEntity, float f, CallbackInfoReturnable<Float> cir) {
         if (config.fakeNightVision.enabled.get()) {
-            cir.setReturnValue(getFnvScale);
+            cir.setReturnValue(fromFloatPercent(fnvScale().get()));
         }
     }
 }

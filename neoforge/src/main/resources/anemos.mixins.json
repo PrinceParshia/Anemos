@@ -8,6 +8,7 @@
     "LivingEntityMixin",
     "FogRendererMixin",
     "GameRendererMixin",
+    "SkyRendererMixin",
     "SliderControlMixin"
   ],
   "injectors": {
